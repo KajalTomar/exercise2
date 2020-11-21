@@ -22,9 +22,9 @@ int testsExecuted = 0;
 // PROTOTYPES
 //-----------------------------------------------------------------------------
 
-int insertCases(void);
+void insertCases(void);
 
-int testInsertItem(set, int, Boolean);
+void testInsertItem(Set *, int, Boolean);
 
 int main(void)
 {
@@ -35,10 +35,9 @@ int main(void)
 
 } //main
 
-insertCases(void)
+void insertCases(void)
 {
-	set testSet;
-
+	Set * testSet = newSet();
 	printf("----------------------------------------------------------------------------------------------------------\n");
 	printf("TESTS FOR insertItem()\n");
 
@@ -73,9 +72,9 @@ insertCases(void)
 	
 } // insertCases
 
-tInsertItem(set test, int item, bool expectedResult)
+void testInsertItem(Set* test, int item, Boolean expectedResult)
 {
-	bool testResult = insertItem(set, item);
+	Boolean testResult = insertItem(test, item);
 	
 	printf("Inserting %i...\n", item);
 	
