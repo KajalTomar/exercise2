@@ -22,22 +22,85 @@ int testsExecuted = 0;
 // PROTOTYPES
 //-----------------------------------------------------------------------------
 
-void insertCases(void);
-void removeCases(void);
+static void newSetCases(void);
+static void deleteSetCases(void)
+static void insertCases(void);
+static void removeCases(void);
+static void areEqualCases(void)
+static void areDisjointCases(void)
+static void unionOfCases(void)
+static void symmetricDiffCases(void)
 
-void testInsertItem(Set *, int, Boolean);
-void testRemoveItem(Set *, int, Boolean);
+static void testInsertItem(Set *, int, Boolean);
+static void testRemoveItem(Set *, int, Boolean);
 
 int main(void)
 {
 	insertCases();
 	removeCases();
+	
+	//  print out how many tests executes, passes, failed
+	printf("\n----------------------------------------------------------------------------------------------------------\n");
+	printf("Total number of tests executed: %i\n", testsExecuted);
+	printf("Total number of tests passed: %i\n", testsExecuted - testsFailed);
+	printf("Total number of tests failed: %i\n", testsFailed);
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	
 	printf("end of processing.");
 	return(0);
 
 } //main
 
-void insertCases(void)
+// -------------------------------------------------------------------------------------------------------
+// FUNCTIONS THAT CALL THE TEST FUNCIONS TO TEST TYPICAL AND EDGE CASES
+// -------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// newSetCases
+// 
+// PURPOSE: calls the testNewSet to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void newSetCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR insertItem()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // newSetCases
+
+// -----------------------------------------------------------------------------
+// deleteSet
+// 
+// PURPOSE: calls the testDeleteSet to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void deleteSetCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR deleteSetItem()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // deleteSetCases
+
+// -----------------------------------------------------------------------------
+// insertCases
+// 
+// PURPOSE: calls the testInsertItem to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void insertCases(void)
 {
 	Set * testSet = newSet();
 	printf("----------------------------------------------------------------------------------------------------------\n");
@@ -79,7 +142,7 @@ void insertCases(void)
 //
 // PURPOSE: Calls testRemoveItem to test normal and edge cases
 // -----------------------------------------------------------------------------
-void removeCases(void)
+static void removeCases(void)
 {
 	Set * testSet = newSet();
 	int i; // to iterate
@@ -122,7 +185,107 @@ void removeCases(void)
 
 } // removeCases
 
-void testInsertItem(Set* test, int item, Boolean expectedResult)
+// -----------------------------------------------------------------------------
+// areEqualCases
+// 
+// PURPOSE: calls the testAreEqual to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void areEqualCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR areEqual()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // areEqualCases
+
+// -----------------------------------------------------------------------------
+// areDisjointCases
+// 
+// PURPOSE: calls the areDisjoint function to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void areDisjointCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR are areDisjoint()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // areDisjointCases
+
+// -----------------------------------------------------------------------------
+// unionOfCases
+// 
+// PURPOSE: calls the testUnionOf function to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void unionOfCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR are unionOf()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // unionOfCases
+
+// -----------------------------------------------------------------------------
+// symmetricDiffCases
+// 
+// PURPOSE: calls the testSymetricDiff function to test normal and edge cases
+// -----------------------------------------------------------------------------
+static void symmetricDiffCases(void)
+{
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR are symmetricDifferenceOf()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // symmetricDiffCases
+
+// -------------------------------------------------------------------------------------------------------
+// FUNCTIONS THAT TEST AND PRINT THE RESULTS 
+// -------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// testNewSet
+// 
+// PURPOSE: 
+// INPUT: 
+// -----------------------------------------------------------------------------
+
+
+// -----------------------------------------------------------------------------
+// testInsertItem
+// 
+// PURPOSE: Test if the removeItem's results match the expected results then 
+// display the outcome.
+// INPUT: int item is the item to be inserted, the expected results (bool) to 
+// test against
+// -----------------------------------------------------------------------------
+static void testInsertItem(Set* test, int item, Boolean expectedResult)
 {
 	Boolean testResult = insertItem(test, item);
 	
@@ -163,7 +326,7 @@ void testInsertItem(Set* test, int item, Boolean expectedResult)
 // INPUT: int item is the item to be removed, the expected reults (bool) to
 // test against
 // -----------------------------------------------------------------------------
-void testRemoveItem(Set * testSet, int item, Boolean expectedResult)
+static void testRemoveItem(Set * testSet, int item, Boolean expectedResult)
 {
 
 	Boolean testResult = removeItem(testSet, item);
