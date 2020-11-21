@@ -72,6 +72,55 @@ void insertCases(void)
 	
 } // insertCases
 
+// -----------------------------------------------------------------------------
+// removeCases
+//
+// PURPOSE: Calls testRemoveItem to test normal and edge cases
+// -----------------------------------------------------------------------------
+void removeCases(void)
+{
+	
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR removeItem()\n");
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	display();
+
+	testRemoveItem(5, true);
+	display();
+	testRemoveItem(12, true);
+	display();
+	testRemoveItem(-5, true);
+	display();
+	
+	printf("Removing an item that was not in the table...\n");
+	testRemoveItem(100, false); // item not in the table
+	display();
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	// test and print out the progress from the edge cases
+	
+	printf("Removing the entry in the first position of the table...\n");
+	testRemoveItem(2147483647, true); 
+	display();
+	
+	printf("Removing the entry in the last position of the table...\n");
+	testRemoveItem(-2147483648, true); 
+	display();
+	
+	printf("Removing the last entry left in the table...\n");
+	testRemoveItem(0, true); 
+	display();
+	
+	printf("Removing an item when the table is empty...\n");
+	testRemoveItem(12, false); 
+	display();
+	
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+
+} // removeCases
+
 void testInsertItem(Set* test, int item, Boolean expectedResult)
 {
 	Boolean testResult = insertItem(test, item);
@@ -104,3 +153,46 @@ void testInsertItem(Set* test, int item, Boolean expectedResult)
 
 	testsExecuted++;
 } // testInsertItem
+
+// -----------------------------------------------------------------------------
+// testRemoveItem
+//
+// PURPOSE: Test if the removeItem's results match the expected results then 
+// display the outcome
+// INPUT: int item is the item to be removed, the expected reults (bool) to
+// test against
+// -----------------------------------------------------------------------------
+void testRemoveItem(int item, bool expectedResult)
+{
+
+	bool testResult = removeItem(item);
+
+	printf("Removing %i...\n", item);
+	
+	if(testResult == expectedResult)
+	{
+		if(testResult)
+		{
+			printf("Passed! %i was successfully removed from the table.\n", item);
+		}
+		else
+		{
+			printf("Passed! %i was not removed from the table (and we didn't expect it to).\n", item);
+		}
+	}
+	else 
+	{
+		if(testResult && !expectedResult)
+		{
+			printf("FAILED: I thought the %i would *not* be removed, but something was removed...\n", item);		
+		}
+		else
+		{
+			printf("FAILED: I thought the %i would be removed, but it was *not*\n", item);		
+		}
+		testsFailed++;
+	}
+	
+	testsExecuted++;
+
+} // testRemoveItem
