@@ -1,0 +1,106 @@
+//------------------------------------------------------------------------------
+// NAME: Kajal Tomar
+// STUDENT NUMBER: 7793306
+// COURSE: COMP2160, SECTION: A01
+// INSTRUCTOR: Dr. Mehdi Niknam
+// ASSIGNMENT: 3, QUESTION: 2
+// 
+// REMARKS: This is the automated test suite for the set ADT implementation. 
+//-------------------------------------------------------------------------------
+
+#include<stdio.h>
+#include"set.h"
+
+//-----------------------------------------------------------------------------
+// CONSTANTS AND TYPES
+//-----------------------------------------------------------------------------
+
+int testsFailed = 0;
+int testsExecuted = 0;
+
+//-----------------------------------------------------------------------------
+// PROTOTYPES
+//-----------------------------------------------------------------------------
+
+int insertCases(void);
+
+int testInsertItem(set, int, Boolean);
+
+int main(void)
+{
+	
+	printf("end of processing.");
+	return(0);
+
+} //main
+
+insertCases(void)
+{
+	set testSet;
+
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("TESTS FOR insertItem()\n");
+
+	// test and print out the progress from the typical cases
+	printf("Testing typical cases.\n\n");
+	testInsertItem(testSet, 5, true);
+	
+	printf("Inserting an entry that is not unique...\n");
+	testInsertItem(testSet, 5, false); // not unique
+	
+	testInsertItem(testSet, 0, true);
+	testInsertItem(testSet, 12, true);
+	
+	printf("---------------------------\n");
+	printf("Testing edge cases.\n\n");
+	// test and print out the progress from the edge cases
+	testInsertItem(testSet, -5, true);
+	
+	removeItem(testSet, 12);
+	printf("Removed entry [12].\n");
+	testInsertItem(testSet, 12, true);
+
+	printf("Inserting a negative entry that is not unique...\n");
+	testInsertItem(testSet, -5, false); // not unique
+	
+	printf("Inserting the maximum value for an integer in C...\n");
+	testInsertItem(testSet, 2147483647, true); // max value for an int 
+	
+	printf("Inserting the minimum value for an integer in C...\n");
+	testInsertItem(testSet, -2147483648, true); // min value for an int 
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
+	
+} // insertCases
+
+tInsertItem(set test, int item, bool expectedResult)
+{
+	bool testResult = insertItem(set, item);
+	
+	printf("Inserting %i...\n", item);
+	
+	if(testResult == expectedResult)
+	{
+		if(testResult)
+		{
+			printf("Passed! %i is a valid entry that was inserted successfully in the table.\n", item);
+		}
+		else
+		{
+			printf("Passed! %i is a *not* a valid (not unique) entry so it was *not* inserted in the table.\n", item);
+		}
+	}
+	else 
+	{
+		if (testResult && !expectedResult)
+		{
+			printf("FAILED: I thought that the value would *not* be added to the table but it was added.\n");
+		} 
+		else 
+		{
+			printf("FAILED: I thought that the value would be added to the table but it was *not* added.\n");
+		}
+		testsFailed++;
+	}
+
+	testsExecuted++;
+} // testInsertItem
