@@ -45,6 +45,7 @@ static void testInsertItem(Set *, int, Boolean);
 static void testRemoveItem(Set *, int, Boolean);
 static void testAreEqual(Set *, Set *, Boolean);
 static void testAreDisjoint(Set *, Set *, Boolean);
+static void testUnionOf(Set *, Set *, Boolean);
 
 static void createComparisonSets(void);
 static void deleteComparisonSets(void);
@@ -60,7 +61,8 @@ int main(void)
 
 	areEqualCases();	
 	areDisjointCases();
-
+	unionOfCases();
+	
 	deleteComparisonSets();
 
 	//  print out how many tests executes, passes, failed
@@ -352,9 +354,9 @@ static void areDisjointCases(void)
 	testAreDisjoint(testSets[0], testSets[6], false);
 
 	// test when one set is disjoint from another if it's contained in the bigger set
-	printf("Testing if two sets are disjoint when they contain some values in common...\n");
+	printf("Testing if two sets are disjoint when they contain some middle values in common...\n");
 	testAreDisjoint(testSets[7], testSets[0], false);
-	printf("Testing if two sets are disjoint when they contain some values in common...\n");
+	printf("Testing if two sets are disjoint when they contain some middle values in common...\n");
 	testAreDisjoint(testSets[0], testSets[7], false);
 
 	printf("---------------------------\n");
@@ -385,13 +387,60 @@ static void areDisjointCases(void)
 static void unionOfCases(void)
 {
 	printf("----------------------------------------------------------------------------------------------------------\n");
-	printf("TESTS FOR are unionOf()\n");
+	printf("TESTS FOR areDisjoint()\n");
 
 	// test and print out the progress from the typical cases
 	printf("Testing typical cases.\n\n");
 	
+	// identical sets
+	
+	// since the orders are already switched here do NOT switch them in the test function
+	printf("Finding the union of identical sets...\n");
+	testUnionOf(testSets[0], testSets[4], true);
+	printf("Finding the union of identical sets when compared in reverse order ...\n");
+	testUnionOf(testSets[4], testSets[0], true);
+	
+	// disjoint sets
+	printf("Finding the union of two completly different sets that are disjoint...\n");
+	testUnionOf(testSets[0], testSets[8], false);
+	printf("Finding the union of are two completly different sets that are disjoint (compared in reverse order)...\n");
+	testUnionOf(testSets[8], testSets[0], false);
+
+	// different sizes but one is a part of the other one
+	printf("Finding the union of two sets where one set contains all of the first few values of the other set...\n");
+	testUnionOf(testSets[5], testSets[0], true);
+	printf("Finding the union of two sets where one set contains all of the first few values of the other set... (compared in reverse order)...\n");
+	testUnionOf(testSets[0], testSets[5], true);
+
+	// test when one set equals the end of another set
+	printf("Finding the union of two sets where one set contains all of the last few values of the other set...\n");
+	testUnionOf(testSets[6], testSets[0], true);
+	printf("Finding the union of two sets where one set contains all of the last few values of the other set... (compared in reverse order)...\n");
+	testUnionOf(testSets[0], testSets[6], true);
+
+	// test when one set is contained in the bigger set
+	printf("Finding the union of two sets where they contain some middle values in common...\n");
+	testUnionOf(testSets[7], testSets[0], true);
+	printf("Finding the union of two sets where they contain some middle values in common...\n");
+	testUnionOf(testSets[0], testSets[7], true);
+
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
+	
+	printf("Finding the union of a given set from iteslf...\n");
+	testUnionOf(testSets[9],testSets[9], false);
+
+	printf("Finding the union of an empty set and a set with values...\n");
+	testUnionOf(testSets[4], testSets[1], false);
+
+	printf("Finding the union of an empty set and itself...\n");
+	testUnionOf(testSets[1], testSets[1], false);
+
+	printf("Finding the union of an empty set and a different empty set...\n");
+	testUnionOf(testSets[1], testSets[2], false);
+	
+	printf("Finding the union of an empty set and a set with exactly one item...\n");
+	testUnionOf(testSets[1], testSets[3], false);
 	
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
@@ -694,6 +743,55 @@ static void testAreDisjoint(Set * setA, Set *setB, Boolean expectedResult)
 	testsExecuted++;
 	
 } //testAreDisjoint
+
+// -----------------------------------------------------------------------------
+// testUnionOf
+// 
+// PURPOSE: Test if the unionOf function's results match the expected results,
+// then display the outcome.  
+// INPUT: setA and setB to find the union from, the expected result (Boolean) 
+// to test against.
+// -----------------------------------------------------------------------------
+static void testUnionOf(Set * setA, Set *setB, Boolean expectedResult)
+{
+	Boolean validUnion = false;
+	Set * unionSet = newSet();
+	
+	unionSet = unionOf(setA, setB);
+	
+	if(unionSet && !areDisjoint(setA, unionSet) && !areDisjoint(setB, unionSet) && !areDisjoint(setA, setB)
+	{
+		validUnion = true;
+	}
+	
+	if(validUnion == expectedResult)
+	{
+		if(validUnion)
+		{
+			printf("Passed! A valid new union set was created, as expected!\n\n");
+		}
+		else 
+		{
+			printf("Passed! The two sets have no values in common. No union set was created, as expected!\n\n");
+		}
+	}
+	else
+	{
+		if(validUnion)
+		{
+			printf("FAILED: The function created a union set, even though the sets are disjoint.\n\n");
+		}
+		else
+		{
+			printf("FAILED: The function failed to create a union set even though two sets have at least one value in common.\n\n");
+		}
+		testsFailed++;
+	}
+
+	testsExecuted++;
+	   
+	 deleteSet(unionSet);
+} // testUnionof
 
 // -----------------------------------------------------------------------------
 // createComparisonSets
