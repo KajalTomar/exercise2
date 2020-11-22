@@ -59,6 +59,7 @@ int main(void)
 	createComparisonSets();
 
 	areEqualCases();	
+	areDisjointCases();
 
 	deleteComparisonSets();
 
@@ -335,7 +336,7 @@ static void areDisjointCases(void)
 	// unequal sets
 	printf("Checking if two completly different sets are disjoint...\n");
 	testAreDisjoint(testSets[0], testSets[8], true);
-	printf("Checking if two completly different sets are equal when compared in reverse order...\n");
+	printf("Checking if two completly different sets are disjoint when compared in reverse order...\n");
 	testAreDisjoint(testSets[8], testSets[0], true);
 
 	// different sizes but one is a part of the other one
@@ -353,7 +354,7 @@ static void areDisjointCases(void)
 	// test when one set is disjoint from another if it's contained in the bigger set
 	printf("Testing if two sets are disjoint when they contain some values in common...\n");
 	testAreDisjoint(testSets[7], testSets[0], false);
-	printf("Testing if two sets are disjoint when they contain some values in common...");
+	printf("Testing if two sets are disjoint when they contain some values in common...\n");
 	testAreDisjoint(testSets[0], testSets[7], false);
 
 	printf("---------------------------\n");
@@ -366,10 +367,10 @@ static void areDisjointCases(void)
 	testAreDisjoint(testSets[4], testSets[1], true);
 
 	printf("Testing if an empty set is disjoint from itself...\n");
-	testAreDisjoint(testSets[1], testSets[1], false);
+	testAreDisjoint(testSets[1], testSets[1], true);
 
 	printf("Testing if an empty sets is disjoint from a different empty set...\n");
-	testAreDisjoint(testSets[1], testSets[2], false);
+	testAreDisjoint(testSets[1], testSets[2], true);
 	
 	printf("Testing if an empty sets is disjoint from a set with exactly one item...\n");
 	testAreDisjoint(testSets[1], testSets[3], true);
