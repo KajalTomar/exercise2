@@ -44,6 +44,7 @@ static void testDeleteSet(Set *, Boolean);
 static void testInsertItem(Set *, int, Boolean);
 static void testRemoveItem(Set *, int, Boolean);
 static void testAreEqual(Set *, Set *, Boolean);
+static void testAreDisjoint(Set *, Set *, Boolean);
 
 static void createComparisonSets(void);
 static void deleteComparisonSets(void);
@@ -318,16 +319,61 @@ static void areEqualCases(void)
 static void areDisjointCases(void)
 {
 	printf("----------------------------------------------------------------------------------------------------------\n");
-	printf("TESTS FOR are areDisjoint()\n");
-	
+	printf("TESTS FOR areDisjoint()\n");
+
 	// test and print out the progress from the typical cases
 	printf("Testing typical cases.\n\n");
 	
+	// identical sets
+	
+	// since the orders are already switched here do NOT switch them in the test function
+	printf("Checking if two identical sets are disjoint...\n");
+	testAreDisjoint(testSets[0], testSets[4], false);
+	printf("Checking if the same two identical sets are disjoint when compared in reverse order ...\n");
+	testAreDisjoint(testSets[4], testSets[0], false);
+	
+	// unequal sets
+	printf("Checking if two completly different sets are disjoint...\n");
+	testAreDisjoint(testSets[0], testSets[8], true);
+	printf("Checking if two completly different sets are equal when compared in reverse order...\n");
+	testAreDisjoint(testSets[8], testSets[0], true);
+
+	// different sizes but one is a part of the other one
+	printf("Testing if two sets are disjoint when one set contains all of the first few values of the other set...\n");
+	testAreDisjoint(testSets[5], testSets[0], false);
+	printf("Testing if two sets are disjoint when one set contains all of the first few values of the other set (in reverse order)...\n");
+	testAreDisjoint(testSets[0], testSets[5], false);
+
+	// test when one set equals the end of another set
+	printf("Testing if two sets are disjoint when one set contains all of the last few values of the other set...\n");
+	testAreDisjoint(testSets[6], testSets[0], false);
+	printf("Testing if two sets are disjoint when one set contains all of the last few values of the other set (in reverse order)...\n");
+	testAreDisjoint(testSets[0], testSets[6], false);
+
+	// test when one set is disjoint from another if it's contained in the bigger set
+	printf("Testing if two sets are disjoint when they contain some values in common...\n");
+	testAreDisjoint(testSets[7], testSets[0], false);
+	printf("Testing if two sets are disjoint when they contain some values in common...");
+	testAreDisjoint(testSets[0], testSets[7], false);
+
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
 	
-	printf("----------------------------------------------------------------------------------------------------------\n\n");
+	printf("Testing if a given set is disjoint from iteslf...\n");
+	testAreDisjoint(testSets[9],testSets[9], false);
 
+	printf("Testing if an empty set is disjoint from a set with values...\n");
+	testAreDisjoint(testSets[4], testSets[1], true);
+
+	printf("Testing if an empty set is disjoint from itself...\n");
+	testAreDisjoint(testSets[1], testSets[1], false);
+
+	printf("Testing if an empty sets is disjoint from a different empty set...\n");
+	testAreDisjoint(testSets[1], testSets[2], false);
+	
+	printf("Testing if an empty sets is disjoint from a set with exactly one item...\n");
+	testAreDisjoint(testSets[1], testSets[3], true);
+	printf("----------------------------------------------------------------------------------------------------------\n\n");
 } // areDisjointCases
 
 // -----------------------------------------------------------------------------
@@ -575,7 +621,7 @@ static void testRemoveItem(Set * testSet, int item, Boolean expectedResult)
 // INPUT: setA and setB to compare, the expected result (Boolean) to test 
 // against.
 // -----------------------------------------------------------------------------
-void testAreEqual(Set * setA, Set *setB, Boolean expectedResult)
+static void testAreEqual(Set * setA, Set *setB, Boolean expectedResult)
 {
 	Boolean equalSets = areEqual(setA, setB);
 	
@@ -607,6 +653,46 @@ void testAreEqual(Set * setA, Set *setB, Boolean expectedResult)
 
 } // testAreEqual
 
+
+// -----------------------------------------------------------------------------
+// testAreDisjoint
+// 
+// PURPOSE: Test if the areDisjoint function's results match the expected results,
+// then display the outcome.  
+// INPUT: setA and setB to compare, the expected result (Boolean) to test 
+// against.
+// -----------------------------------------------------------------------------
+static void testAreDisjoint(Set * setA, Set *setB, Boolean expectedResult)
+{
+	Boolean disjointSets = areDisjoint(setA, setB);
+	
+	if(disjointSets == expectedResult)
+	{
+		if(disjointSets)
+		{
+			printf("Passed! The two sets are disjoint, as expected!\n\n");
+		}
+		else 
+		{
+			printf("Passed! The two sets are *not* disjoint, as expected!\n\n");
+		}
+	}
+	else
+	{
+		if(disjointSets)
+		{
+			printf("FAILED: The function says the tests are disjoint, even though they are *not* disjoint.\n\n");
+		}
+		else
+		{
+			printf("FAILED: The function says the tests are *not* disjoint, even though they are.\n\n");
+		}
+		testsFailed++;
+	}
+
+	testsExecuted++;
+	
+} //testAreDisjoint
 
 // -----------------------------------------------------------------------------
 // createComparisonSets
