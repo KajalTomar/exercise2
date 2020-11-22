@@ -46,6 +46,7 @@ static void testRemoveItem(Set *, int, Boolean);
 static void testAreEqual(Set *, Set *, Boolean);
 static void testAreDisjoint(Set *, Set *, Boolean);
 static void testUnionOf(Set *, Set *, Set *);
+static void testSymmetricDiff(Set *, Set *, Set *);
 
 static void createComparisonSets(void);
 static void deleteComparisonSets(void);
@@ -62,7 +63,8 @@ int main(void)
 	areEqualCases();	
 	areDisjointCases();
 	unionOfCases();
-	
+	symmetricDiffCases();
+
 	deleteComparisonSets();
 
 	//  print out how many tests executes, passes, failed
@@ -386,7 +388,6 @@ static void areDisjointCases(void)
 // -----------------------------------------------------------------------------
 static void unionOfCases(void)
 {
-	Set * unionSet = newSet();
 	printf("----------------------------------------------------------------------------------------------------------\n");
 	printf("TESTS FOR unionOf()\n");
 
@@ -403,27 +404,27 @@ static void unionOfCases(void)
 	
 	// disjoint sets
 	printf("Finding the union of two completly different sets that are disjoint...\n");
-	testUnionOf(testSets[0], testSets[8], testSet[18]);
+	testUnionOf(testSets[0], testSets[8], testSets[18]);
 	printf("Finding the union of are two completly different sets that are disjoint (compared in reverse order)...\n");
-	testUnionOf(testSets[8], testSets[0], testSet[18]);
+	testUnionOf(testSets[8], testSets[0], testSets[18]);
 
 	// different sizes but one is a part of the other one
 	printf("Finding the union of two sets where one set contains all of the first few values of the other set...\n");
-	testUnionOf(testSets[5], testSets[0], testSet[0]);
+	testUnionOf(testSets[5], testSets[0], testSets[0]);
 	printf("Finding the union of two sets where one set contains all of the first few values of the other set... (compared in reverse order)...\n");
-	testUnionOf(testSets[0], testSets[5],  testSet[0]);
+	testUnionOf(testSets[0], testSets[5],  testSets[0]);
 
 	// test when one set equals the end of another set
 	printf("Finding the union of two sets where one set contains all of the last few values of the other set...\n");
-	testUnionOf(testSets[6], testSets[0], testSet[0]);
+	testUnionOf(testSets[6], testSets[0], testSets[0]);
 	printf("Finding the union of two sets where one set contains all of the last few values of the other set... (compared in reverse order)...\n");
-	testUnionOf(testSets[0], testSets[6], testSet[0]);
+	testUnionOf(testSets[0], testSets[6], testSets[0]);
 
 	// test when one set is contained in the bigger set
 	printf("Finding the union of two sets where they contain some middle values in common...\n");
-	testUnionOf(testSets[7], testSets[0], testSet[0]);
+	testUnionOf(testSets[7], testSets[0], testSets[0]);
 	printf("Finding the union of two sets where they contain some middle values in common...\n");
-	testUnionOf(testSets[0], testSets[7], testSet[0]);
+	testUnionOf(testSets[0], testSets[7], testSets[0]);
 
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
@@ -800,7 +801,7 @@ static void testAreDisjoint(Set * setA, Set *setB, Boolean expectedResult)
 // INPUT: setA and setB to find the union from, the expected result (Boolean) 
 // to test against.
 // -----------------------------------------------------------------------------
-static void testUnionOf(Set * setA, Set * setB, set * expectedSet)
+static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 {	
 	Boolean notChanged = true;
 	
@@ -813,7 +814,7 @@ static void testUnionOf(Set * setA, Set * setB, set * expectedSet)
 	
 	unionSet = unionOf(setA, setB);
 	
-	if(areEqual(setA, setACopy);) && areEqual(setB, setBCopy))
+	if(areEqual(setA, setACopy) && areEqual(setB, setBCopy))
 	{
 		notChanged = false;
 		printf("One of the original sets was changed by the unionOf function!\n");	
@@ -863,7 +864,7 @@ static void testUnionOf(Set * setA, Set * setB, set * expectedSet)
 // INPUT: setA and setB to find the symmetric difference of, the expected 
 // result (Boolean) to compare the results with.
 // -----------------------------------------------------------------------------
-static void testSymmetricDiff(Set * setA, Set *setB, set * expectedSet)
+static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 {	
 	Boolean notChanged = true;
 	
@@ -875,7 +876,7 @@ static void testSymmetricDiff(Set * setA, Set *setB, set * expectedSet)
 	setBCopy = setB;
 	symmetricDiff = symmetricDifferenceOf(setA, setB);
 	
-	if(areEqual(setA, setACopy);) && areEqual(setB, setBCopy))
+	if(areEqual(setA, setACopy) && areEqual(setB, setB))
 	{
 		notChanged = false;
 		printf("One of the original sets was changed by the symmetricDifferenceOf function!\n");	
