@@ -387,7 +387,7 @@ static void areDisjointCases(void)
 static void unionOfCases(void)
 {
 	printf("----------------------------------------------------------------------------------------------------------\n");
-	printf("TESTS FOR areDisjoint()\n");
+	printf("TESTS FOR unionOf()\n");
 
 	// test and print out the progress from the typical cases
 	printf("Testing typical cases.\n\n");
@@ -428,7 +428,7 @@ static void unionOfCases(void)
 	printf("Testing edge cases.\n\n");
 	
 	printf("Finding the union of a given set from iteslf...\n");
-	testUnionOf(testSets[9],testSets[9], false);
+	testUnionOf(testSets[9],testSets[9], true);
 
 	printf("Finding the union of an empty set and a set with values...\n");
 	testUnionOf(testSets[4], testSets[1], false);
@@ -759,7 +759,7 @@ static void testUnionOf(Set * setA, Set *setB, Boolean expectedResult)
 	
 	unionSet = unionOf(setA, setB);
 	
-	if(unionSet && !areDisjoint(setA, unionSet) && !areDisjoint(setB, unionSet) && !areDisjoint(setA, setB)
+	if(unionSet && !areDisjoint(setA, unionSet) && !areDisjoint(setB, unionSet) && !areDisjoint(setA, setB))
 	{
 		validUnion = true;
 	}
