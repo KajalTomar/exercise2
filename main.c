@@ -15,6 +15,12 @@
 //-----------------------------------------------------------------------------
 // CONSTANTS AND TYPES
 //-----------------------------------------------------------------------------
+#define SET_AMOUNT 10
+#define SM_SET_SIZE 5 // small set size
+#define M_SET_SIZE 10 // med set size
+#define XL_SET_SIZE = 10000 // large set size
+
+Set * testSets[SET_AMOUNT];
 
 int testsFailed = 0;
 int testsExecuted = 0;
@@ -237,19 +243,6 @@ static void removeCases(void)
 // -----------------------------------------------------------------------------
 static void areEqualCases(void)
 {
-	const int SET_AMOUNT = 6;
-	const int SM_SET_SIZE = 5; // small set size
-	const int L_SET_SIZE = 10; // large set size
-
-	Set * testSets[SET_AMOUNT];
-
-	int i; // to iterate 
-	
-	for(i = 0; i < SET_AMOUNT; i++)
-	{
-		testSets[i] = newSet();
-	}
-
 	printf("----------------------------------------------------------------------------------------------------------\n");
 	printf("TESTS FOR areEqual()\n");
 
@@ -257,79 +250,53 @@ static void areEqualCases(void)
 	printf("Testing typical cases.\n\n");
 	
 	// identical sets
-	for(i = 0; i < SM_SET_SIZE; i++)
-	{
-		insertItem(testSets[0], i*SM_SET_SIZE);  // testSet[0] = [0 5 10 15 20]
-		insertItem(testSets[1], i*SM_SET_SIZE);  // testSet[1] = [0 5 10 15 20] 
-		insertItem(testSets[3], i*SM_SET_SIZE+1); // testSet[3] = [1 6 11 16 21]
-	}
-
+	
 	// since the orders are already switched here do NOT switch them in the test function
 	printf("Checking if two identical sets are equal...\n");
-	testAreEqual(testSets[0], testSets[1], true);
+	testAreEqual(testSets[0], testSets[4], true);
 	printf("Checking if the same two identical sets are equal when compared in reverse order ...\n");
-	testAreEqual(testSets[1], testSets[0], true);
+	testAreEqual(testSets[4], testSets[0], true);
 	
 	// unequal sets
 	printf("Checking if two completly different sets are equal...\n");
-	testAreEqual(testSets[0], testSets[3], false);
+	testAreEqual(testSets[0], testSets[8], false);
 	printf("Checking if two completly different sets are equal when compared in reverse order...\n");
-	testAreEqual(testSets[3], testSets[0], false);
+	testAreEqual(testSets[8], testSets[0], false);
 
 	// different sizes but one is a part of the other one
-	for(i = SM_SET_SIZE; i <= L_SET_SIZE; i++)
-	{
-		insertItem(testSets[1], i*SM_SET_SIZE); // testSet[1] = [0 5 10 15 20 25 30 35 40 45]
-		insertItem(testSets[2], i*SM_SET_SIZE); // testSet[2] = [25 30 35 40 45]
-	}
-	
 	// test one set equals the beggining of another set
 	printf("Testing if [0 5 10 15 20] == [0 5 10 15 20 25 30 35 40 45]...\n");
-	testAreEqual(testSets[0], testSets[1], false);
+	testAreEqual(testSets[5], testSets[0], false);
 	printf("Testing if [0 5 10 15 20 25 30 35 40 45] == [0 5 10 15 20]...\n");
-	testAreEqual(testSets[1], testSets[0], false);
+	testAreEqual(testSets[0], testSets[5], false);
 
 	// test when one set equals the end of another set
 	printf("Testing if [25 30 35 40 45] == set [0 5 10 15 20 25 30 35 40 45]...\n");
-	testAreEqual(testSets[1], testSets[2], false);
+	testAreEqual(testSets[6], testSets[0], false);
 	printf("Testing if [0 5 10 15 20 25 30 35 40 45] == set [25 30 35 40 45]...\n");
-	testAreEqual(testSets[2], testSets[1], false);
+	testAreEqual(testSets[0], testSets[6], false);
 
 	// test when one set equals another if it's contained in the bigger set
-	removeItem(testSets[0], 0);
-	removeItem(testSets[0], 5);
-	removeItem(testSets[0], 10);
-	insertItem(testSets[0], 25);
-	insertItem(testSets[0], 30);
-	// testSets[0] = [15 20 25 30]
-
-	printf("Testing if [15 20 25 30] == set [0 5 10 15 20 25 30 35 40 45]...\n");
-	testAreEqual(testSets[0], testSets[1], false);
+	printf("Testing if [15 20 25 30 35] == set [0 5 10 15 20 25 30 35 40 45]...\n");
+	testAreEqual(testSets[7], testSets[0], false);
 	printf("Testing if [0 10 15 20 25 30 35 40 45] == set [15 20 25 30]...\n");
-	testAreEqual(testSets[1], testSets[0], false);
+	testAreEqual(testSets[0], testSets[7], false);
 
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
 	
 	printf("Testing if a set is uqual to iteslf...\n");
-	testAreEqual(testSets[0],testSets[0], true);
+	testAreEqual(testSets[9],testSets[9], true);
 
 	printf("Testing if an empty set is equal to a set with values...\n");
-	testAreEqual(testSets[4], testSets[0], false);
+	testAreEqual(testSets[4], testSets[1], false);
 
-	printf("Testing if two emptry sets are equal to itself...\n");
-	testAreEqual(testSets[4], testSets[4], true);
+	printf("Testing if an empty set is equal to itself...\n");
+	testAreEqual(testSets[1], testSets[1], true);
 
 	printf("Testing if an emptry sets are equal to a different empty set...\n");
-	testAreEqual(testSets[4], testSets[5], true);
+	testAreEqual(testSets[1], testSets[2], true);
 	
-	for(i = 0; i < SET_AMOUNT; i++)
-	{
-		deleteSet(testSets[i]);
-	}
-
-    testMemLeak();
-
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // areEqualCases
@@ -631,4 +598,117 @@ void testAreEqual(Set * setA, Set *setB, Boolean expectedResult)
 
 } // testAreEqual
 
+
+// -----------------------------------------------------------------------------
+// createComparisonSets
+// 
+// PURPOSE: Creates a bunch of sets we can use for comparison.
+//  
+// -----------------------------------------------------------------------------
+void createComparisonSets(void)
+{
+	// ***
+	INDEX = DESCRIPTION IN COMPARISON TO GENERAL = THE SET 
+	testSets[0] = general = [0 5 10 15 20 25 30 35 40 45] 
+	testSets[1] = empty01 = [] 
+	testSets[2] = empty02 = [] 
+	testSets[3] = onlyOneItem = [123] 
+	testSets[4] = indenticalToGeneral = [0 5 10 15 20 25 30 35 40 45] 
+	testSets[5] = onlyFirsthalf = [0 5 10 15 20]
+	testSets[6] = onlyLastHalf = [25 30 35 40 45] 
+	testSets[7] = middleValues = [15 20 25 30 35]
+	testSets[8] = unique01 = [1 6 11 16 21 26 31 36 41 46] 
+	testSets[9] = unique02 = [2 7 12 17 22 27 32 37 42 47] 
+	testSets[10] = singleCommonVal = [2 7 12 17 20 27 32 37 42 47] 
+	testSets[11] = FirstValCommon = [0 7 12 17 22 27 32 37 42 47] 
+	testSets[12] = LastValCommon = [2 7 12 17 22 27 32 37 42 45] 
+	testSets[13] = singleDiffVal = [0 5 10 15 22 25 30 35 40 45] 
+	testSets[14] = FirstValDiff = [2 5 10 15 20 25 30 35 40 45] 
+	testSets[15] = LastValDiff = [0 5 10 15 20 25 30 35 40 47] 
+	testSets[16] = firstHalfSame = [0 5 10 15 20 908 445 66 76 23] 
+	testSets[17] = firstHalfSame = [908 445 66 76 23 25 30 35 40 45] 
+	** //
+		
+	for(i = 0; i < SET_AMOUNT; i++)
+	{
+		testSets[i] = newSet();
+	}
+	
+	insertItem(testSets[3],123); // unique
+	
+	for(i = 0; i < M_SET_SIZE; i++)
+	{
+		insertItem(testSets[0],i*SM_SET_SIZE); // general
+		insertItem(testSets[4],i*SM_SET_SIZE); // indentical to general
+		insertItem(testSets[8],i*SM_SET_SIZE+1); // unique01
+		insertItem(testSets[9],i*SM_SET_SIZE+2); // unique02
+		if (i = 0)
+		{
+			insertItem(testSets[11],i*SM_SET_SIZE); // FirstValCommon;
+			
+			insertItem(testSets[14],i*SM_SET_SIZE+2); // FirstValDiff;
+		}
+		else if (i = 4)
+		{
+			insertItem(testSets[10],i*SM_SET_SIZE); // singleCommonVal;
+			insertItem(testSets[13],i*SM_SET_SIZE+2); // singleDiffVal;
+		}
+		else if (i = M_SET_SIZE-1)
+		{
+			insertItem(testSets[12],i*SM_SET_SIZE); // LastValCommon;
+			insertItem(testSets[15],i*SM_SET_SIZE+2); // LastValDiff;
+		}
+		else 
+		{
+			insertItem(testSets[13],i*SM_SET_SIZE); // singleDiffVal;
+			insertItem(testSets[14],i*SM_SET_SIZE); // FirstValDiff;
+			insertItem(testSets[15],i*SM_SET_SIZE); // LastValDiff;
+			
+			insertItem(testSets[10],i*SM_SET_SIZE+2); // singleCommonVal;
+			insertItem(testSets[11],i*SM_SET_SIZE+2); // FirstValCommon;
+			insertItem(testSets[12],i*SM_SET_SIZE+2); // LastValCommon;
+		}
+		
+		
+	}
+	
+	for(i = 0; i < SM_SET_SIZE; i++)
+	{
+		insertItem(testSets[5],i*SM_SET_SIZE); // onlyFirsthalf
+		insertItem(testSets[16],i*SM_SET_SIZE); // firsthalfSame
+		insertItem(testSets[17],i*SM_SET_SIZE+3); // lasthalfSame
+	}
+	
+	
+	
+	for(i = SM_SET_SIZE; i <= M_SET_SIZE; i++)
+	{
+		insertItem(testSets[6],i*SM_SET_SIZE); // onlyLastHalf
+		insertItem(testSets[17],i*SM_SET_SIZE); // lasthalfSame
+		insertItem(testSets[16],i*SM_SET_SIZE+3); // firsthalfSame
+	}
+	
+	
+	// middleValues
+	insertItem(testSets[7], 15);
+	insertItem(testSets[7], 20);
+	insertItem(testSets[7], 25);
+	insertItem(testSets[7], 30);
+	insertItem(testSets[7], 35);
+	
+} // createComparisonSets
+
+// -----------------------------------------------------------------------------
+// deleteComparisonSets
+// 
+// PURPOSE: Deletes all the comparison sets.
+// -----------------------------------------------------------------------------
+void deleteComparisonSets(void)
+{
+	for(i = 0; i < SET_AMOUNT; i++)
+	{
+		deleteSet(testSets[i]);
+	}	
+	assert(validateMemUse);
+} // deleteComparisonSets
 
