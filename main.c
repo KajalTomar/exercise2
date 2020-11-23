@@ -15,7 +15,7 @@
 //-----------------------------------------------------------------------------
 // CONSTANTS AND TYPES
 //-----------------------------------------------------------------------------
-#define SET_AMOUNT 21
+#define SET_AMOUNT 16
 #define SM_SET_SIZE 5 // small set size
 #define M_SET_SIZE 10 // med set size
 #define XL_SET_SIZE = 10000 // large set size
@@ -404,9 +404,9 @@ static void unionOfCases(void)
 	
 	// disjoint sets
 	printf("Finding the union of two completly different sets that are disjoint...\n");
-	testUnionOf(testSets[0], testSets[8], testSets[13]);
+	testUnionOf(testSets[0], testSets[8], testSets[12]);
 	printf("Finding the union of are two completly different sets that are disjoint (compared in reverse order)...\n");
-	testUnionOf(testSets[8], testSets[0], testSets[13]);
+	testUnionOf(testSets[8], testSets[0], testSets[12]);
 
 	// different sizes but one is a part of the other one
 	printf("Finding the union of two sets where one set contains all of the first few values of the other set...\n");
@@ -471,9 +471,9 @@ static void symmetricDiffCases(void)
 	
 	// disjoint sets
 	printf("Finding the symmetric difference of two completly different sets that are disjoint...\n");
-	testSymmetricDiff(testSets[0], testSets[8], testSets[15]);
+	testSymmetricDiff(testSets[0], testSets[8], testSets[12]);
 	printf("Finding the symmetric difference of two completly different sets that are disjoint (compared in reverse order)...\n");
-	testSymmetricDiff(testSets[8], testSets[0], testSets[15]);
+	testSymmetricDiff(testSets[8], testSets[0], testSets[12]);
 
 	// different sizes but one is a part of the other one
 	printf("Finding the symmetric difference of two sets where one set contains all of the first few values of the other set...\n");
@@ -489,13 +489,10 @@ static void symmetricDiffCases(void)
 
 	// test when one set is contained in the bigger set
 	printf("Finding the symmetric difference of two sets where they contain some middle values in common...\n");
-	testSymmetricDiff(testSets[7], testSets[0], testSets[16]);
+	testSymmetricDiff(testSets[7], testSets[0], testSets[13]);
 	
 	printf("Finding the symmetric difference of two sets where they contain some middle values in common...\n");
-	testSymmetricDiff(testSets[0], testSets[7], testSets[16]);
-	
-	printf("Finding the symmetric difference of two sets where only the one value of one of the sets is different...\n");
-	testSymmetricDiff(testSets[0], testSets[10], testSets[17]);
+	testSymmetricDiff(testSets[0], testSets[7], testSets[13]);
 
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
@@ -516,10 +513,10 @@ static void symmetricDiffCases(void)
 	testSymmetricDiff(testSets[1], testSets[3], testSets[3]);
 	
 	printf("Finding the symmetric difference of two sets where only the first value of one of the sets is different...\n");
-	testSymmetricDiff(testSets[0], testSets[11], testSets[18]);
+	testSymmetricDiff(testSets[0], testSets[10], testSets[14]);
 	
-	printf("Finding the symmetric difference of two sets where only the first value of one of the sets is different...\n");
-	testSymmetricDiff(testSets[0], testSets[12], testSets[19]);
+	printf("Finding the symmetric difference of two sets where only the last value of one of the sets is different...\n");
+	testSymmetricDiff(testSets[0], testSets[11], testSets[15]);
 		
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
@@ -944,17 +941,13 @@ static void createComparisonSets(void)
 	[7] = middleValues = [15 20 25 30 35]
 	[8] = unique01 = [1 6 11 16 21 26 31 36 41 46] 
 	[9] = unique02 = [2 7 12 17 22 27 32 37 42 47] 
-	[10] = singleDiffVal = [0 5 10 15 22 25 30 35 40 45] 
-	[11] = FirstValDiff = [2 5 10 15 20 25 30 35 40 45] 
-	[12] = LastValDiff = [0 5 10 15 20 25 30 35 40 47] 
-	[13] = firstHalfSame = [0 5 10 15 20 908 445 66 76 23] 
-	[14] = lastHalfSame = [908 445 66 76 23 25 30 35 40 45] 
-	[15] = [0] union [8] = [0 5 10 15 20 25 30 35 40 45 1 6 11 16 21 26 31 36 41 46]
-	[16] = [0] Symmetric Difference [7] = [0 5 10 40 45]
-	[17] = [0] Symmetric Differece [10] = [22] 
-	[18] = [0] Symmetric Differece [11] = [2] 
-	[19] = [0] Symmetric Differece [12] = [47]
-	[20] = signify expected empty = [-1] 
+	[10] = FirstValDiff = [2 5 10 15 20 25 30 35 40 45] 
+	[11] = LastValDiff = [0 5 10 15 20 25 30 35 40 47] 
+	[12] = [0] union [8] = [0 5 10 15 20 25 30 35 40 45 1 6 11 16 21 26 31 36 41 46]
+	[13] = [0] Symmetric Difference [7] = [0 5 10 40 45]
+	[14] = firstValueDiff = [500] 
+	[15] = lastValueDiff = [-7] 
+	
 	****************************************************************************/
 	
 	int i; // to iterate
@@ -964,12 +957,11 @@ static void createComparisonSets(void)
 		testSets[i] = newSet();
 	}
 	
-	insertItem(testSets[20],-1); // signify expected empty
 	insertItem(testSets[3],123); // unique
 	
-	insertItem(testSets[15],22); 
-	insertItem(testSets[16],2); 
-	insertItem(testSets[17],47); 
+	insertItem(testSets[14],500); 
+	insertItem(testSets[15],500); 
+	insertItem(testSets[16],-7); 
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
@@ -977,41 +969,27 @@ static void createComparisonSets(void)
 		insertItem(testSets[4],i*SM_SET_SIZE); // indentical to general
 		insertItem(testSets[8],i*SM_SET_SIZE+1); // unique01
 		insertItem(testSets[9],i*SM_SET_SIZE+2); // unique02
-		insertItem(testSets[13],i*SM_SET_SIZE); // generalUnionUnique01 
-		if (i == 0)
-		{
-			insertItem(testSets[11],i*SM_SET_SIZE+2); // firstDiffValue;
-		}
-		else 
-		{
-			insertItem(testSets[11],i*SM_SET_SIZE); 
-		}
-		
-		if (i == 4)
-		{
-			insertItem(testSets[10],i*SM_SET_SIZE+2); // singleDiffVal;
-		}
-		else
-		{
-			insertItem(testSets[10],i*SM_SET_SIZE); // singleDiffVal;
-		}
-
-		if (i == M_SET_SIZE-2)
-		{
-			insertItem(testSets[12],i*SM_SET_SIZE+2); // LastValDiff;
-		}
-		else 
-		{
-			insertItem(testSets[12],i*SM_SET_SIZE); // LastValDiff;
-		}
-		
-		
+		insertItem(testSets[12],i*SM_SET_SIZE); // generalUnionUnique01 	
 	}
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
-		insertItem(testSets[13],i*SM_SET_SIZE+1); 
+		insertItem(testSets[12],i*SM_SET_SIZE+1); 
 	}
+	
+	// first value different
+	insertItem(testSets[10],500); 
+	for(i = 1; i < M_SET_SIZE; i++)
+	{
+		insertItem(testSets[10],i*SM_SET_SIZE+1); 
+	}
+	
+	// last value different
+	for(i = 1; i < M_SET_SIZE-1; i++)
+	{
+		insertItem(testSets[11],i*SM_SET_SIZE+1); 
+	}
+	insertItem(testSets[11],-7); 
 
 	// only first half
 	insertItem(testSets[5], 0);
@@ -1035,11 +1013,11 @@ static void createComparisonSets(void)
 	insertItem(testSets[7], 35);
 	
 	// OriginalMinusMiddle
-	insertItem(testSets[14], 0);
-	insertItem(testSets[14], 5);
-	insertItem(testSets[14], 10);
-	insertItem(testSets[14], 40);
-	insertItem(testSets[14], 45);
+	insertItem(testSets[13], 0);
+	insertItem(testSets[13], 5);
+	insertItem(testSets[13], 10);
+	insertItem(testSets[13], 40);
+	insertItem(testSets[13], 45);
 	
 } // createComparisonSets
 
