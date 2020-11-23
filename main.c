@@ -18,7 +18,7 @@
 #define SET_AMOUNT 16
 #define SM_SET_SIZE 5 // small set size
 #define M_SET_SIZE 10 // med set size
-#define XL_SET_SIZE = 10000 // large set size
+#define XL_SET_SIZE 10000 // large set size
 
 Set * testSets[SET_AMOUNT];
 
@@ -28,7 +28,7 @@ int testsExecuted = 0;
 //-----------------------------------------------------------------------------
 // PROTOTYPES
 //-----------------------------------------------------------------------------
-
+static void memLeakCases(void);
 static void newSetCases(void);
 static void deleteSetCases(void);
 static void insertCases(void);
@@ -53,8 +53,7 @@ static void deleteComparisonSets(void);
 
 int main(void)
 {
-	testMemLeak();
-	
+	memLeakCases();
 	newSetCases();
 	deleteSetCases();
 	insertCases();
@@ -68,7 +67,7 @@ int main(void)
 	symmetricDiffCases();
 	
 	deleteComparisonSets();
-	
+
 	//  print out how many tests executes, passes, failed
 	printf("\n----------------------------------------------------------------------------------------------------------\n");
 	printf("Total number of tests executed: %i\n", testsExecuted);
@@ -84,6 +83,34 @@ int main(void)
 // -------------------------------------------------------------------------------------------------------
 // FUNCTIONS THAT CALL THE TEST FUNCIONS TO TEST TYPICAL AND EDGE CASES
 // -------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// memLeakCases 
+//
+// PURPOSE: Creates a bunch of new sets, removes them and then checks for a 
+// memory leak use testMemLeak()
+// -----------------------------------------------------------------------------
+static void memLeakCases(void)
+{
+	Set * sets[XL_SET_SIZE];
+
+	printf("----------------------------------------------------------------------------------------------------------\n");
+	printf("Testing program to see if it creates memory leaks....\n");
+
+	for(int i = 0; i < XL_SET_SIZE; i++)
+	{
+		sets[i] = newSet();
+		insertItem(sets[i], i);
+	}
+
+	for(int i = 0; i < XL_SET_SIZE; i++)
+	{
+		deleteSet(sets[i]);
+	}
+
+	testMemLeak();
+
+} // memLeakesCases
 
 // -----------------------------------------------------------------------------
 // newSetCases
@@ -112,7 +139,8 @@ static void newSetCases(void)
 
 	printf("Creating another set (so two sets exist now)... \n");
 	testNewSet(setB, true);
-    
+   	
+	testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 } // newSetCases
 
@@ -148,6 +176,7 @@ static void deleteSetCases(void)
 	printf("Deleting an empty set...\n");
 	testDeleteSet(emptySet, true);
 
+	testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // deleteSetCases
@@ -184,9 +213,10 @@ static void insertCases(void)
 
 	printf("Inserting a negative entry that is not unique...\n");
 	testInsertItem(testSet, -5, false); // not unique
-	
-	printf("Inserting the maximum value for an integer in C...\n");
-	testInsertItem(testSet, 2147483647, true); // max value for an int 
+
+//	Can't add this to the 'correct' program
+//	printf("Inserting the maximum value for an integer in C...\n");
+//	testInsertItem(testSet, 2147483647, true); // max value for an int 
 	
 	printf("Inserting the minimum value for an integer in C...\n");
 	testInsertItem(testSet, -2147483648, true); // min value for an int 
@@ -195,6 +225,7 @@ static void insertCases(void)
 	testInsertItem(testSet, 2147483646, true); // max value for an int 
     
 	deleteSet(testSet);
+	testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 	
 } // insertCases
@@ -208,7 +239,7 @@ static void removeCases(void)
 {
 	Set * testSet = newSet();
 	int i; // to iterate
-	int totalSets = 5;
+	int totalSets = 6;
 
 	printf("----------------------------------------------------------------------------------------------------------\n");
 	printf("TESTS FOR removeItem()\n");
@@ -217,7 +248,7 @@ static void removeCases(void)
 	
 	for(i = 0; i < totalSets; i++)
 	{
-		insertItem(testSet, i*totalSets); // [0 5 10 15 20 25]
+		insertItem(testSet, i*(totalSets-1)); // [0 5 10 15 20 25]
 	}
 
 	testRemoveItem(testSet, 5, true);
@@ -244,6 +275,7 @@ static void removeCases(void)
 	testRemoveItem(testSet, 12, false); 
 	
 	deleteSet(testSet);
+	testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // removeCases
@@ -514,7 +546,7 @@ static void symmetricDiffCases(void)
 	
 	printf("Finding the symmetric difference of two sets where only the last value of one of the sets is different...\n");
 	testSymmetricDiff(testSets[0], testSets[11], testSets[15]);
-		
+
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // symmetricDiffCases
@@ -533,27 +565,18 @@ static void testMemLeak(void)
 {
 	printf("---------------------------\n");
 	
-	for(int i = 0; i < XL_SET_SIZE; i++)
-	{
-		insertItem(i);	
-	}
-	
-	for(int i = 0; i < XL_SET_SIZE; i++)
-	{
-		removeItem(i);	
-	}
-	
 	if(validateMemUse())
 	{
-		printf("There was no memory leak created!\n");
+		printf("Passed! There were no memory leak created!\n\n");
 	}
 	else 
 	{
-		printf("A memory leak was created. :(\n");
+		printf("FAILED: A memory leak was created. :(\n\n");
+		testsFailed++;
 	}
-	
-	
-	
+		
+	testsExecuted++; 
+
 } //testMemLeak
 
 // -----------------------------------------------------------------------------
@@ -823,13 +846,10 @@ static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 {	
 	Boolean changed = false;
 	
-	Set * setACopy = newSet();
-	Set * setBCopy = newSet();
+	Set * setACopy = symmetricDifferenceOf(setA, testSets[1]); // comparing to an empty set to make a copy
+	Set * setBCopy = symmetricDifferenceOf(setB, testSets[1]); // comparing to an empty set to make a copy
 	Set * unionSet = newSet();
-	
-	setACopy = setA;
-	setBCopy = setB;
-	
+
 	unionSet = unionOf(setA, setB);
 	
 	if(!areEqual(setA, setACopy) ||  !areEqual(setB, setBCopy))
@@ -867,8 +887,11 @@ static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 	}
 
 	testsExecuted++;
-	   
+	
 	deleteSet(unionSet);
+	deleteSet(setACopy);
+	deleteSet(setBCopy);
+
 } // testUnionof
 
 // -----------------------------------------------------------------------------
@@ -883,12 +906,10 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 {	
 	Boolean changed = false;
 	
-	Set * setACopy = newSet();
-	Set * setBCopy = newSet();
+	Set * setACopy = unionOf(setA, setA);
+	Set * setBCopy = unionOf(setB, setB);
 	Set * symmetricDiff = newSet();
-	
-	setACopy = setA;
-	setBCopy = setB;
+
 	symmetricDiff = symmetricDifferenceOf(setA, setB);
 	
 	if(!areEqual(setA, setACopy) || !areEqual(setB, setB))
@@ -928,6 +949,8 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 	testsExecuted++;
 	   
 	 deleteSet(symmetricDiff);
+	 deleteSet(setACopy);
+	 deleteSet(setBCopy);
 	
 } //testSymmetricDiff
 // -----------------------------------------------------------------------------
