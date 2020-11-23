@@ -404,9 +404,9 @@ static void unionOfCases(void)
 	
 	// disjoint sets
 	printf("Finding the union of two completly different sets that are disjoint...\n");
-	testUnionOf(testSets[0], testSets[8], testSets[18]);
+	testUnionOf(testSets[0], testSets[8], testSets[13]);
 	printf("Finding the union of are two completly different sets that are disjoint (compared in reverse order)...\n");
-	testUnionOf(testSets[8], testSets[0], testSets[18]);
+	testUnionOf(testSets[8], testSets[0], testSets[13]);
 
 	// different sizes but one is a part of the other one
 	printf("Finding the union of two sets where one set contains all of the first few values of the other set...\n");
@@ -966,9 +966,10 @@ static void createComparisonSets(void)
 	
 	insertItem(testSets[20],-1); // signify expected empty
 	insertItem(testSets[3],123); // unique
-	insertItem(testSets[17],22); 
-	insertItem(testSets[18],2); 
-	insertItem(testSets[19],47); 
+	
+	insertItem(testSets[15],22); 
+	insertItem(testSets[16],2); 
+	insertItem(testSets[17],47); 
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
@@ -976,14 +977,14 @@ static void createComparisonSets(void)
 		insertItem(testSets[4],i*SM_SET_SIZE); // indentical to general
 		insertItem(testSets[8],i*SM_SET_SIZE+1); // unique01
 		insertItem(testSets[9],i*SM_SET_SIZE+2); // unique02
-		insertItem(testSets[15],i*SM_SET_SIZE); // generalUnionUnique01 
+		insertItem(testSets[13],i*SM_SET_SIZE); // generalUnionUnique01 
 		if (i == 0)
 		{
-			insertItem(testSets[11],i*SM_SET_SIZE+2); // FirstValDiff;
+			insertItem(testSets[11],i*SM_SET_SIZE+2); // firstDiffValue;
 		}
 		else 
 		{
-			insertItem(testSets[11],i*SM_SET_SIZE); // FirstValDiff;
+			insertItem(testSets[11],i*SM_SET_SIZE); 
 		}
 		
 		if (i == 4)
@@ -1009,25 +1010,22 @@ static void createComparisonSets(void)
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
-		insertItem(testSets[15],i*SM_SET_SIZE+1); 
+		insertItem(testSets[13],i*SM_SET_SIZE+1); 
 	}
 
-	for(i = 0; i < SM_SET_SIZE; i++)
-	{
-		insertItem(testSets[5],i*SM_SET_SIZE); // onlyFirsthalf
-		insertItem(testSets[13],i*SM_SET_SIZE); // firsthalfSame
-		insertItem(testSets[14],i*SM_SET_SIZE+3); // lasthalfSame
-	}
+	// only first half
+	insertItem(testSets[5], 0);
+	insertItem(testSets[5], 5);
+	insertItem(testSets[5], 10);
+	insertItem(testSets[5], 15);
+	insertItem(testSets[5], 20);
 	
-	
-	
-	for(i = SM_SET_SIZE; i < M_SET_SIZE+1; i++)
-	{
-		insertItem(testSets[6],i*SM_SET_SIZE); // onlyLastHalf
-		insertItem(testSets[14],i*SM_SET_SIZE); // lasthalfSame
-		insertItem(testSets[13],i*SM_SET_SIZE+3); // firsthalfSame
-	}
-	
+	// only last half
+	insertItem(testSets[6], 25);
+	insertItem(testSets[6], 30);
+	insertItem(testSets[6], 35);
+	insertItem(testSets[6], 40);
+	insertItem(testSets[6], 45);
 	
 	// middleValues
 	insertItem(testSets[7], 15);
@@ -1037,11 +1035,11 @@ static void createComparisonSets(void)
 	insertItem(testSets[7], 35);
 	
 	// OriginalMinusMiddle
-	insertItem(testSets[16], 0);
-	insertItem(testSets[16], 5);
-	insertItem(testSets[16], 10);
-	insertItem(testSets[16], 40);
-	insertItem(testSets[16], 45);
+	insertItem(testSets[14], 0);
+	insertItem(testSets[14], 5);
+	insertItem(testSets[14], 10);
+	insertItem(testSets[14], 40);
+	insertItem(testSets[14], 45);
 	
 } // createComparisonSets
 
