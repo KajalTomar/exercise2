@@ -478,7 +478,7 @@ static void symmetricDiffCases(void)
 	// different sizes but one is a part of the other one
 	printf("Finding the symmetric difference of two sets where one set contains all of the first few values of the other set...\n");
 	testSymmetricDiff(testSets[5], testSets[0], testSets[6]);
-	printf("Finding thesymmetric difference of two sets where one set contains all of the first few values of the other set... (compared in reverse order)...\n");
+	printf("Finding the symmetric difference of two sets where one set contains all of the first few values of the other set... (compared in reverse order)...\n");
 	testSymmetricDiff(testSets[0], testSets[5], testSets[6]);
 
 	// test when one set equals the end of another set
@@ -490,8 +490,12 @@ static void symmetricDiffCases(void)
 	// test when one set is contained in the bigger set
 	printf("Finding the symmetric difference of two sets where they contain some middle values in common...\n");
 	testSymmetricDiff(testSets[7], testSets[0], testSets[16]);
+	
 	printf("Finding the symmetric difference of two sets where they contain some middle values in common...\n");
 	testSymmetricDiff(testSets[0], testSets[7], testSets[16]);
+	
+	printf("Finding the symmetric difference of two sets where only the one value of one of the sets is different...\n");
+	testSymmetricDiff(testSets[0], testSets[10], testSets[22]);
 
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
@@ -511,6 +515,12 @@ static void symmetricDiffCases(void)
 	printf("Finding the symmetric difference of an empty set and a set with exactly one item...\n");
 	testSymmetricDiff(testSets[1], testSets[3], testSets[3]);
 	
+	printf("Finding the symmetric difference of two sets where only the first value of one of the sets is different...\n");
+	testSymmetricDiff(testSets[0], testSets[11], testSets[18]);
+	
+	printf("Finding the symmetric difference of two sets where only the first value of one of the sets is different...\n");
+	testSymmetricDiff(testSets[0], testSets[12], testSets[19]);
+		
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // symmetricDiffCases
@@ -863,7 +873,7 @@ static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 // -----------------------------------------------------------------------------
 static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 {	
-	Boolean notChanged = true;
+	Boolean changed = false;
 	
 	Set * setACopy = newSet();
 	Set * setBCopy = newSet();
@@ -875,11 +885,11 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 	
 	if(areEqual(setA, setACopy) && areEqual(setB, setB))
 	{
-		notChanged = false;
+		changed = true;
 		printf("One of the original sets was changed by the symmetricDifferenceOf function!\n");	
 	}
 	
-	if(areEqual(symmetricDiff, expectedSet) && !notChanged)
+	if(areEqual(symmetricDiff, expectedSet) && !changed)
 	{
 		if(symmetricDiff)
 		{
@@ -939,7 +949,7 @@ static void createComparisonSets(void)
 	[12] = LastValDiff = [0 5 10 15 20 25 30 35 40 47] 
 	[13] = firstHalfSame = [0 5 10 15 20 908 445 66 76 23] 
 	[14] = lastHalfSame = [908 445 66 76 23 25 30 35 40 45] 
-	[15] = [0] union [1] = [0 5 10 15 20 25 30 35 40 45 1 6 11 16 21 26 31 36 41 46]
+	[15] = [0] union [8] = [0 5 10 15 20 25 30 35 40 45 1 6 11 16 21 26 31 36 41 46]
 	[16] = [0] Symmetric Difference [7] = [0 5 10 40 45]
 	[17] = [0] Symmetric Differece [10] = [22] 
 	[18] = [0] Symmetric Differece [11] = [2] 
