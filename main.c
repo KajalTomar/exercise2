@@ -53,6 +53,8 @@ static void deleteComparisonSets(void);
 
 int main(void)
 {
+	testMemLeak();
+	
 	newSetCases();
 	deleteSetCases();
 	insertCases();
@@ -64,9 +66,9 @@ int main(void)
 	areDisjointCases();
 	unionOfCases();
 	symmetricDiffCases();
-
+	
 	deleteComparisonSets();
-
+	
 	//  print out how many tests executes, passes, failed
 	printf("\n----------------------------------------------------------------------------------------------------------\n");
 	printf("Total number of tests executed: %i\n", testsExecuted);
@@ -111,7 +113,6 @@ static void newSetCases(void)
 	printf("Creating another set (so two sets exist now)... \n");
 	testNewSet(setB, true);
     
-    testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 } // newSetCases
 
@@ -146,8 +147,7 @@ static void deleteSetCases(void)
 
 	printf("Deleting an empty set...\n");
 	testDeleteSet(emptySet, true);
-    
-	testMemLeak();
+
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // deleteSetCases
@@ -195,7 +195,6 @@ static void insertCases(void)
 	testInsertItem(testSet, 2147483646, true); // max value for an int 
     
 	deleteSet(testSet);
-	testMemLeak();
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 	
 } // insertCases
@@ -245,8 +244,6 @@ static void removeCases(void)
 	testRemoveItem(testSet, 12, false); 
 	
 	deleteSet(testSet);
-    testMemLeak();
-
 	printf("----------------------------------------------------------------------------------------------------------\n\n");
 
 } // removeCases
@@ -535,6 +532,17 @@ static void symmetricDiffCases(void)
 static void testMemLeak(void)
 {
 	printf("---------------------------\n");
+	
+	for(int i = 0; i < XL_SET_SIZE; i++)
+	{
+		insertItem(i);	
+	}
+	
+	for(int i = 0; i < XL_SET_SIZE; i++)
+	{
+		removeItem(i);	
+	}
+	
 	if(validateMemUse())
 	{
 		printf("There was no memory leak created!\n");
@@ -543,7 +551,10 @@ static void testMemLeak(void)
 	{
 		printf("A memory leak was created. :(\n");
 	}
-}
+	
+	
+	
+} //testMemLeak
 
 // -----------------------------------------------------------------------------
 // testNewSet
@@ -1033,6 +1044,7 @@ static void deleteComparisonSets(void)
 	{
 		deleteSet(testSets[i]);
 	}	
+	
 	assert(validateMemUse);
 } // deleteComparisonSets
 
