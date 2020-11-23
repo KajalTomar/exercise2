@@ -28,6 +28,8 @@ int testsExecuted = 0;
 //-----------------------------------------------------------------------------
 // PROTOTYPES
 //-----------------------------------------------------------------------------
+
+// These functions call the test functions in order to test different general and edge cases
 static void memLeakCases(void);
 static void newSetCases(void);
 static void deleteSetCases(void);
@@ -38,7 +40,8 @@ static void areDisjointCases(void);
 static void unionOfCases(void);
 static void symmetricDiffCases(void);
 
-static void testMemLeak(void); // move this to the end
+// These functions test spefic functions and display the result
+static void testMemLeak(void); 
 static void testNewSet(Set *, Boolean);
 static void testDeleteSet(Set *, Boolean);
 static void testInsertItem(Set *, int, Boolean);
@@ -97,17 +100,20 @@ static void memLeakCases(void)
 	printf("----------------------------------------------------------------------------------------------------------\n");
 	printf("Testing program to see if it creates memory leaks....\n");
 
+	// create a large number of sets
 	for(int i = 0; i < XL_SET_SIZE; i++)
 	{
 		sets[i] = newSet();
 		insertItem(sets[i], i);
 	}
 
+	// delete all the sets
 	for(int i = 0; i < XL_SET_SIZE; i++)
 	{
 		deleteSet(sets[i]);
 	}
 
+	// check if any memory leaks got created
 	testMemLeak();
 
 } // memLeakesCases
@@ -205,6 +211,7 @@ static void insertCases(void)
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
 	// test and print out the progress from the edge cases
+	
 	testInsertItem(testSet, -5, true);
 	
 	removeItem(testSet, 12);
@@ -464,11 +471,11 @@ static void unionOfCases(void)
 	printf("Finding the union of an empty set and a set with values...\n");
 	testUnionOf(testSets[4], testSets[1], testSets[4]);
 
-	//printf("Finding the union of an empty set and itself...\n");
-	//testUnionOf(testSets[1], testSets[1], testSets[1]);
+	printf("Finding the union of an empty set and itself...\n");
+	testUnionOf(testSets[1], testSets[1], testSets[1]);
 
-	//printf("Finding the union of an empty set and a different empty set...\n");
-	//testUnionOf(testSets[1], testSets[2], testSets[1]);
+	printf("Finding the union of an empty set and a different empty set...\n");
+	testUnionOf(testSets[1], testSets[2], testSets[1]);
 	
 	printf("Finding the union of an empty set and a set with exactly one item...\n");
 	testUnionOf(testSets[1], testSets[3], testSets[3]);
@@ -839,7 +846,7 @@ static void testAreDisjoint(Set * setA, Set *setB, Boolean expectedResult)
 // 
 // PURPOSE: Test if the unionOf function's results match the expected results,
 // then display the outcome.  
-// INPUT: setA and setB to find the union from, the expected result (Boolean) 
+// INPUT: setA and setB to find the union from, the expected result (Set *) 
 // to test against.
 // -----------------------------------------------------------------------------
 static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
@@ -900,7 +907,7 @@ static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 // PURPOSE: Test if the symmetricDifferenceOf function's results match the 
 // expected results then display the outcome.  
 // INPUT: setA and setB to find the symmetric difference of, the expected 
-// result (Boolean) to compare the results with.
+// result (Set *) to compare the results with.
 // -----------------------------------------------------------------------------
 static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 {	
@@ -957,7 +964,6 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 // createComparisonSets
 // 
 // PURPOSE: Creates a bunch of sets we can use for comparison.
-//  
 // -----------------------------------------------------------------------------
 static void createComparisonSets(void)
 {
@@ -980,7 +986,7 @@ static void createComparisonSets(void)
 	[12] = [0] union [8] = [0 5 10 15 20 25 30 35 40 45 1 6 11 16 21 26 31 36 41 46]
 	[13] = [0] Symmetric Difference [7] = [0 5 10 40 45]
 	[14] = firstValueDiff = [500] 
-	[15] = lastValueDiff = [-7] 
+	[15] = lastValueDiff = [7] 
 	
 	****************************************************************************/
 	
