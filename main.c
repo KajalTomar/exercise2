@@ -495,7 +495,7 @@ static void symmetricDiffCases(void)
 	testSymmetricDiff(testSets[0], testSets[7], testSets[16]);
 	
 	printf("Finding the symmetric difference of two sets where only the one value of one of the sets is different...\n");
-	testSymmetricDiff(testSets[0], testSets[10], testSets[22]);
+	testSymmetricDiff(testSets[0], testSets[10], testSets[17]);
 
 	printf("---------------------------\n");
 	printf("Testing edge cases.\n\n");
