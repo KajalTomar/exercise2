@@ -1,5 +1,5 @@
-main: set.h set1.o main.c
-	clang -Wall main.c set1.o -o main
+main: set.h set3.o main.c
+	clang -Wall main.c set3.o -o main
 
 clear:
-	main.o set1.o main
+	main.o set3.o main
