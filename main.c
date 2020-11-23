@@ -960,8 +960,7 @@ static void createComparisonSets(void)
 	insertItem(testSets[3],123); // unique
 	
 	insertItem(testSets[14],500); 
-	insertItem(testSets[15],500); 
-	insertItem(testSets[16],-7); 
+	insertItem(testSets[15],7); 
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
@@ -979,17 +978,17 @@ static void createComparisonSets(void)
 	
 	// first value different
 	insertItem(testSets[10],500); 
-	for(i = 1; i < M_SET_SIZE; i++)
+	for(i = 0; i < M_SET_SIZE; i++)
 	{
-		insertItem(testSets[10],i*SM_SET_SIZE+1); 
+		insertItem(testSets[10],i*SM_SET_SIZE); 
 	}
 	
 	// last value different
-	for(i = 1; i < M_SET_SIZE-1; i++)
+	for(i = 0; i < M_SET_SIZE; i++)
 	{
-		insertItem(testSets[11],i*SM_SET_SIZE+1); 
+		insertItem(testSets[11],i*SM_SET_SIZE); 
 	}
-	insertItem(testSets[11],-7); 
+	insertItem(testSets[11],7); 
 
 	// only first half
 	insertItem(testSets[5], 0);
