@@ -826,7 +826,7 @@ static void testUnionOf(Set * setA, Set * setB, Set * expectedSet)
 	
 	if(!areEqual(setA, setACopy) ||  !areEqual(setB, setBCopy))
 	{
-		changed = false;
+		changed = true;
 		printf("One of the original sets was changed by the unionOf function!\n");	
 	}
 	
@@ -883,7 +883,7 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 	setBCopy = setB;
 	symmetricDiff = symmetricDifferenceOf(setA, setB);
 	
-	if(areEqual(setA, setACopy) && areEqual(setB, setB))
+	if(!areEqual(setA, setACopy) || !areEqual(setB, setB))
 	{
 		changed = true;
 		printf("One of the original sets was changed by the symmetricDifferenceOf function!\n");	
@@ -891,7 +891,7 @@ static void testSymmetricDiff(Set * setA, Set *setB, Set * expectedSet)
 	
 	if(areEqual(symmetricDiff, expectedSet) && !changed)
 	{
-		if(symmetricDiff)
+			if(symmetricDiff)
 		{
 			printf("Passed! A valid new symmetric difference set was created, as expected!\n\n");
 		}
@@ -968,7 +968,7 @@ static void createComparisonSets(void)
 	insertItem(testSets[3],123); // unique
 	insertItem(testSets[17],22); 
 	insertItem(testSets[18],2); 
-	insertItem(testSets[18],47); 
+	insertItem(testSets[19],47); 
 	
 	for(i = 0; i < M_SET_SIZE; i++)
 	{
@@ -981,40 +981,51 @@ static void createComparisonSets(void)
 		{
 			insertItem(testSets[11],i*SM_SET_SIZE+2); // FirstValDiff;
 		}
-		else if (i == 4)
+		else 
+		{
+			insertItem(testSets[11],i*SM_SET_SIZE); // FirstValDiff;
+		}
+		
+		if (i == 4)
 		{
 			insertItem(testSets[10],i*SM_SET_SIZE+2); // singleDiffVal;
 		}
-		else if (i == M_SET_SIZE-1)
+		else
+		{
+			insertItem(testSets[10],i*SM_SET_SIZE); // singleDiffVal;
+		}
+
+		if (i == M_SET_SIZE-2)
 		{
 			insertItem(testSets[12],i*SM_SET_SIZE+2); // LastValDiff;
 		}
 		else 
 		{
-			insertItem(testSets[10],i*SM_SET_SIZE); // singleDiffVal;
-			insertItem(testSets[11],i*SM_SET_SIZE); // FirstValDiff;
 			insertItem(testSets[12],i*SM_SET_SIZE); // LastValDiff;
 		}
 		
 		
 	}
 	
+	for(i = 0; i < M_SET_SIZE; i++)
+	{
+		insertItem(testSets[15],i*SM_SET_SIZE+1); 
+	}
+
 	for(i = 0; i < SM_SET_SIZE; i++)
 	{
 		insertItem(testSets[5],i*SM_SET_SIZE); // onlyFirsthalf
 		insertItem(testSets[13],i*SM_SET_SIZE); // firsthalfSame
 		insertItem(testSets[14],i*SM_SET_SIZE+3); // lasthalfSame
-		insertItem(testSets[15],i*SM_SET_SIZE+1); // generalUnionUnique01 
 	}
 	
 	
 	
-	for(i = SM_SET_SIZE; i <= M_SET_SIZE; i++)
+	for(i = SM_SET_SIZE; i < M_SET_SIZE+1; i++)
 	{
 		insertItem(testSets[6],i*SM_SET_SIZE); // onlyLastHalf
 		insertItem(testSets[14],i*SM_SET_SIZE); // lasthalfSame
 		insertItem(testSets[13],i*SM_SET_SIZE+3); // firsthalfSame
-		insertItem(testSets[15],i*SM_SET_SIZE+1); // generalUnionUnique01 
 	}
 	
 	
